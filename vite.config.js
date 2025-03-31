@@ -5,4 +5,18 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: "/portfolio",
+  assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png'],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./src/assets/styles/global.css";`
+      }
+    }
+  },
+  resolve: {
+    alias: {
+      // Add this alias if needed
+      'react-slick': 'react-slick/dist/react-slick.js'
+    }
+  }
 });
