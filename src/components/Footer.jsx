@@ -26,7 +26,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-about">
-            <h3>TechPortfolio</h3>
+            <h3>MERN Stack Innovator</h3>
             <p>
               A passionate developer creating innovative solutions with cutting-edge technologies.
             </p>

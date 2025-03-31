@@ -44,7 +44,7 @@ const Navbar = () => {
     >
       <div className="container">
         <Link to="/" className="logo">
-          <span>Tech</span>Portfolio
+          <span>MERN</span>Stack Innovator
         </Link>
 
         <div className={`nav-links ${isOpen ? 'active' : ''}`}>
