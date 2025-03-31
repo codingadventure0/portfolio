@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home2';
+import Home from './pages/Home';
 // import Projects from './pages/Projects';
 // import ProjectDetails from './pages/ProjectDetails';
 // import Contact from './pages/Contact';
@@ -30,6 +30,7 @@ function App() {
         ) : (
           <>
           <Navbar />
+          <Home />
           {/* <Routes>
             <Route path="/" element={<Home />} exact/>
             <Route path="/projects" element={<Projects />} exact/>

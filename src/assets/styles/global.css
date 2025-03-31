@@ -33,9 +33,6 @@ body {
   background-color: var(--white);
   overflow-x: hidden;
 }
-body:hover {
-  cursor: pointer;
-}
 
 .container {
   width: 100%;
