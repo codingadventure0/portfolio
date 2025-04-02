@@ -1,351 +1,1254 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, useAnimations, Html, PerspectiveCamera } from '@react-three/drei';
-import { EffectComposer, Bloom, Glitch } from '@react-three/postprocessing';
-import { GlitchMode } from 'postprocessing';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-import { LoadingManager } from 'three';
-import '../assets/styles/Home.css';
+import React, { useEffect, useState } from "react";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import {
+  FaDownload,
+  FaBriefcase,
+  FaGraduationCap,
+  FaCode,
+  FaTrophy,
+  FaCertificate,
+  FaLaptopCode,
+  FaShieldAlt,
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+  FaArrowRight,
+  FaChevronDown,
+  FaReact,
+  FaNodeJs,
+  FaDocker,
+  FaGit,
+  FaAws,
+  FaPython,
+  FaLinux,
+  FaGamepad,
+  FaMusic,
+  FaBook,
+  FaCamera,
+  FaPlane,
+  FaBrain,
+  FaLightbulb,
+  FaGlobeAmericas,
+  FaRobot,
+  FaRocket,
+  FaTools,
+  FaPingPong,
+  FaChess
+} from "react-icons/fa";
+import {
+  SiMongodb,
+  SiExpress,
+  SiTensorflow,
+  SiPytorch,
+  SiDjango,
+  SiFlask,
+  SiFirebase,
+  SiArduino,
+  SiRaspberrypi,
+  SiMetasploit,
+} from "react-icons/si";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { FiMail } from "react-icons/fi";
+import { SiLeetcode, SiHackerrank } from "react-icons/si";
+import "../assets/styles/home.css";
+import { Link } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import MouseEffect from "../components/MouseEffect";
 
-const Home = () => {
-  const [webGLAvailable, setWebGLAvailable] = useState(true);
-  const [webGLError, setWebGLError] = useState(null);
-  const [modelLoaded, setModelLoaded] = useState(false);
-  const [progress, setProgress] = useState(0);
+// Particle background component
+const ParticlesBackground = () => {
+  const [particles, setParticles] = useState([]);
 
-  // Enhanced WebGL availability check
   useEffect(() => {
-    const checkWebGL = () => {
-      try {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        
-        if (!gl) {
-          setWebGLAvailable(false);
-          setWebGLError('WebGL is not supported in your browser');
-          return;
-        }
-
-        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-        if (debugInfo) {
-          const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-          const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-          
-          if (vendor.includes('Intel') && renderer.includes('HD Graphics')) {
-            const versionMatch = renderer.match(/(\d+\.\d+\.\d+)/);
-            if (versionMatch && versionMatch[0] < '10.18.10') {
-              setWebGLError(`Your Intel HD Graphics driver (${versionMatch[0]}) may be too old for WebGL. Please update your graphics drivers.`);
-            }
-          }
-        }
-      } catch (e) {
-        setWebGLAvailable(false);
-        setWebGLError(`WebGL error: ${e.message}`);
-      }
-    };
-
-    checkWebGL();
+    const newParticles = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 12 + 2,
+      delay: Math.random() * 5,
+      duration: Math.random() * 15 + 10,
+      color: `hsl(${Math.random() * 60 + 200}, 80%, 60%)`,
+      shape: Math.random() > 0.5 ? "circle" : "square",
+    }));
+    setParticles(newParticles);
   }, []);
 
-  // Fallback content if WebGL isn't available
-  if (!webGLAvailable) {
-    return (
-      <section className="hero-section webgl-fallback">
+  return (
+    <div className="particles-container">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className={`particle ${particle.shape}`}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: [0, 0.8, 0],
+            y: [particle.y, particle.y + 100],
+            x: [particle.x, particle.x + (Math.random() * 30 - 15)],
+            rotate: particle.shape === "square" ? [0, 180] : 0,
+          }}
+          transition={{
+            delay: particle.delay,
+            duration: particle.duration,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "linear",
+          }}
+          style={{
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+            width: `${particle.size}px`,
+            height: `${particle.size}px`,
+            background: particle.color,
+            boxShadow: `0 0 20px 2px ${particle.color}`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const Home = () => {
+  const [activeTab, setActiveTab] = useState("skills");
+  const [expandedAchievement, setExpandedAchievement] = useState(null);
+  const controls = useAnimation();
+
+  const [heroRef, heroInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+  const [aboutRef, aboutInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+  const [educationRef, educationInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+  const [skillsRef, skillsInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+  const [experienceRef, experienceInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+  const [achievementsRef, achievementsInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+  const [certificationsRef, certificationsInView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
+  const [ref, inView] = useInView({ threshold: 0.1 });
+
+  const skills = [
+    { name: "MERN Stack", level: 80, icon: <FaLaptopCode />, color: "#6c63ff" },
+    { name: "Python", level: 75, icon: <FaCode />, color: "#3776ab" },
+    { name: "JavaScript", level: 80, icon: <FaCode />, color: "#f0db4f" },
+    // { name: "AI/ML", level: 80, icon: <FaShieldAlt />, color: "#ff6b6b" },
+    {
+      name: "Cybersecurity",
+      level: 50,
+      icon: <FaShieldAlt />,
+      color: "#4ecdc4",
+    },
+    { name: "Embedded Systems", level: 60, icon: <FaCode />, color: "#45aaf2" },
+  ];
+
+  const tools = [
+    { name: "React", icon: <FaReact /> },
+    { name: "Node.js", icon: <FaNodeJs /> },
+    { name: "Express", icon: <SiExpress /> },
+    { name: "MongoDB", icon: <SiMongodb /> },
+    // { name: "TensorFlow", icon: <SiTensorflow /> },
+    // { name: "PyTorch", icon: <SiPytorch /> },
+    // { name: "Django", icon: <SiDjango /> },
+    // { name: "Flask", icon: <SiFlask /> },
+    // { name: "Docker", icon: <FaDocker /> },
+    { name: "Git", icon: <FaGit /> },
+    { name: "AWS", icon: <FaAws /> },
+    { name: "Firebase", icon: <SiFirebase /> },
+    { name: "Arduino", icon: <SiArduino /> },
+    { name: "Raspberry Pi", icon: <SiRaspberrypi /> },
+    // { name: "Kali Linux", icon: <SiKaliLinux /> },
+    { name: "Metasploit", icon: <SiMetasploit /> },
+  ];
+
+  const achievements = [
+    {
+      title: "SIH Finalist 2024",
+      description:
+        "Recognized for innovative tech solution using Python and Cybersecurity.",
+      details:
+        "Developed a secure web application fuzzer tool platform combining multiples tools like nmap, metasploit, whireshar which can help to dectect vulnurabilities using advanced features and encryption techniques. The solution was selected among top 10 out of 500+ entries in Smart India Hackathon 2024.",
+      date: "November 2024",
+    },
+    {
+      title: "1st Place Python Competition",
+      description: "Awarded for solving complex programming challenges.",
+      details:
+        "Competed against 200+ participants in a 2-hour coding marathon, solving 15 algorithmic problems with optimal solutions. Demonstrated expertise in data structures and problem-solving under time constraints.",
+      date: "October 2024",
+    },
+    {
+      title: "Hackathon Winner",
+      description: "Secured first place in college-level hackathon.",
+      details:
+        "Led a team of 6 to develop a real-time cybersecurity threat detection dashboard using Python and Cybersecurity. Implemented many tools like nmap, whireshark, metasploit with 90% accuracy.",
+      date: "September 2024",
+    },
+    {
+      title: "Web Development Winner",
+      description: "1st prize for innovative full-stack application.",
+      details:
+        "Built an IoT-based classroom management system with React frontend, Node.js backend, and MongoDB. Integrated real-time data visualization and automated attendance tracking using facial recognition.",
+      date: "May 2024",
+    },
+    {
+      title: "ISRO Recognition",
+      description: "Appreciation certificate for Pragyan Rover Model.",
+      details:
+        "Designed and built a functional scale model of ISRO's Pragyan rover with Arduino-based autonomous navigation system. Recognized by ISRO scientists for technical excellence and innovation in embedded systems.",
+      date: "August 2024",
+    },
+  ];
+
+  const certifications = [
+    {
+      name: "Certified Python Developer",
+      issuer: "Python Institute",
+      date: "2024",
+      // credential: "PCAP-31-03",
+      link: "#",
+    },
+    // {
+    //   name: "Machine Learning with Python",
+    //   issuer: "Coursera",
+    //   date: "2023",
+    //   credential: "C4MLP-2023",
+    //   link: "#",
+    // },
+    // {
+    //   name: "AI & Chatbot Development",
+    //   issuer: "Udemy",
+    //   date: "2022",
+    //   credential: "UC-AI2022",
+    //   link: "#",
+    // },
+    {
+      name: "Mern Stack Developer",
+      issuer: "apna college",
+      date: "2024",
+      // credential: "FCC-SEC2022",
+      link: "#",
+    },
+  ];
+
+  const hobbies = [
+    {
+      name: "Table Tennis",
+      icon: <FaPingPong />,
+      description: "I enjoy playing table tennis, improving my skills and competing.",
+      color: "#FF6B6B",
+    },
+    {
+      name: "Chess",
+      icon: <FaChess /> ,
+      description: "I am a chess player, strategizing and competing in various formats.",
+      color: "#6c63ff",
+    },
+    {
+      name: "Travel",
+      icon: <FaPlane />,
+      description: "Exploring new cultures and cuisines around the world.",
+      color: "#FFA500",
+    },
+    {
+      name: "Reading",
+      icon: <FaBook />,
+      description: "Reading books, especially sci-fi and technical topics.",
+      color: "#4B8BBE",
+    },
+    {
+      name: "Coding",
+      icon: <FaLaptopCode />,
+      description: "Writing code and building software applications.",
+      color: "#00BFA6",
+    },
+  ];
+  
+
+  // Interests data
+  const interests = [
+
+    {
+      name: "Software Development",
+      icon: <FaCode />,
+      description: "Building applications and writing code to solve problems.",
+      color: "#4B8BBE",
+    },
+    {
+      name: "Cybersecurity",
+      icon: <FaShieldAlt />,
+      description: "Protecting systems and networks from digital threats.",
+      color: "#00BFA6",
+    },
+    {
+      name: "IoT",
+      icon: <FaNetworkWired />,
+      description: "The interconnected world of devices and data exchange.",
+      color: "#6c63ff",
+    },
+    {
+      name: "Robotics",
+      icon: <FaRobot />,
+      description: "Human-robot interaction and automation technologies.",
+      color: "#FFA500",
+    },
+  ];
+  
+
+  // Particles.js configuration
+  const particlesInit = async (engine) => {
+    await loadFull(engine);
+  };
+
+  const toggleAchievement = (index) => {
+    setExpandedAchievement(expandedAchievement === index ? null : index);
+  };
+
+  // Floating social icons animation
+  const socialIcons = [
+    { icon: <FaGithub />, name: "GitHub", link: "https://github.com/codingadventure0", color: "#333" },
+    { icon: <FaLinkedin />, name: "LinkedIn", link: "https://www.linkedin.com/in/abhishek-kumar977/", color: "#0077b5" },
+    { icon: <SiLeetcode />, name: "LeetCode", link: "#", color: "#f89f1b" },
+    { icon: <SiHackerrank />, name: "HackerRank", link: "https://www.hackerrank.com/profile/abhibth977", color: "#2ec866" },
+    { icon: <FaTwitter />, name: "Twitter", link: "#", color: "#1da1f2" },
+    { icon: <FiMail />, name: "Email", link: "abhishek23iot17.gecv@gmail.com", color: "#ea4335" },
+  ];
+
+  return (
+    <div className="home-page">
+      <MouseEffect />
+      {/* Floating Social Icons */}
+      <motion.div
+        className="social-icons-container"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+      >
+        {socialIcons.map((social, index) => (
+          <motion.a
+            key={index}
+            href={social.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon"
+            whileHover={{ y: -5, scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            style={{ backgroundColor: social.color }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.7 + index * 0.1 }}
+          >
+            {social.icon}
+            <span className="tooltip">{social.name}</span>
+          </motion.a>
+        ))}
+      </motion.div>
+
+      {/* Hero Section */}
+      <section className="hero" ref={heroRef}>
+        <ParticlesBackground />
         <div className="container">
-          <div className="alert alert-danger mb-4">
-            <h4>WebGL Not Available</h4>
-            {webGLError && <p className="mb-2">{webGLError}</p>}
-            <ul className="mb-4">
-              <li>Try updating your graphics drivers</li>
-              <li>Try using Chrome or Firefox</li>
-              <li>Enable hardware acceleration in browser settings</li>
-            </ul>
-          </div>
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              <h1 className="display-4 fw-bold mb-4">Full Stack Developer</h1>
-              <p className="lead mb-4">Creating innovative solutions with cutting-edge technologies</p>
-              <button className="btn btn-primary btn-lg px-4 me-2">View Projects</button>
-              <button className="btn btn-outline-secondary btn-lg px-4">Contact Me</button>
+          <MouseEffect />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 50 }}
+            transition={{ duration: 0.8 }}
+            className="hero-content"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h1>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  Hi, I'm
+                </motion.span>{" "}
+                <motion.span
+                  className="name"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  Abhishek
+                </motion.span>
+              </h1>
+              <motion.h2
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <TypewriterEffect
+                  text={[
+                    "MERN Stack Developer",
+                    "Node.js & JavaScript Enthusiast",
+                    "Basic Cybersecurity Specialist",
+                    "Embedded Systems Engineer",
+                    "UI/UX Designer"
+                  ]}
+                  delay={100}
+                />
+
+              </motion.h2>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+            >
+              I build{" "}
+              <span className="highlight">scalable web applications</span> and
+              integrate <span className="highlight">AI</span> to solve
+              real-world problems. Passionate about{" "}
+              <span className="highlight">cybersecurity</span> and{" "}
+              <span className="highlight">embedded systems</span>.
+            </motion.p>
+
+            <div className="hero-buttons">
+              <motion.a
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                href="/images/abhishek_kumar_resume.pdf"
+                download
+                className="btn btn-primary"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.4 }}
+              >
+                <FaDownload /> Download CV
+              </motion.a>
+              <Link to="/contact">
+                <motion.a
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn btn-secondary"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.5 }}
+                >
+                  <FaBriefcase /> Hire me
+                </motion.a>
+              </Link>
             </div>
-            <div className="col-lg-6">
-              <img 
-                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" 
-                alt="Coding Illustration" 
-                className="img-fluid rounded shadow"
-              />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50, rotate: 5 }}
+            animate={{
+              opacity: heroInView ? 1 : 0,
+              x: heroInView ? 0 : 50,
+              rotate: heroInView ? 0 : 5,
+            }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="hero-image"
+          >
+            <div className="image-wrapper">
+              <div className="glow-effect"></div>
+              <img src="/images/coding.webp" alt="Abhishek Kumar" />
             </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          className="scroll-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          whileHover={{ y: 5 }}
+        >
+          <span>Scroll Down</span>
+          <motion.div
+            className="arrow"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <FaChevronDown />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* About Section */}
+      <section className="about" id="about" ref={aboutRef}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: aboutInView ? 1 : 0, y: aboutInView ? 0 : 50 }}
+            transition={{ duration: 0.8 }}
+            className="section-header"
+          >
+            <h2>
+              About <span>Me</span>
+            </h2>
+            <p>Get to know me better</p>
+          </motion.div>
+
+          <div className="about-content">
+            <motion.div
+              initial={{ opacity: 0, x: -50, rotate: -3 }}
+              animate={{
+                opacity: aboutInView ? 1 : 0,
+                x: aboutInView ? 0 : -50,
+                rotate: aboutInView ? 0 : -3,
+              }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="about-image"
+              whileHover={{ y: -10 }}
+            >
+              <div className="image-border"></div>
+              <img src="/images/abhi.jpg" alt="About Me" />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{
+                opacity: aboutInView ? 1 : 0,
+                x: aboutInView ? 0 : 50,
+              }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="about-text"
+            >
+              <h3>Who am I?</h3>
+              <p>
+                I am a{" "}
+                <span className="highlight">
+                  passionate and dynamic tech enthusiast
+                </span>{" "}
+                with expertise in MERN Stack Development, Python Programming,
+                Embedded Systems, and Cybersecurity. With a strong foundation in
+                full-stack web development, I specialize in building{" "}
+                <span className="highlight">
+                  scalable and responsive applications
+                </span>
+                .
+              </p>
+              <p>
+                My Python skills extend to{" "}
+                <span className="highlight">AI integration</span>, machine
+                learning, cybersecurity, and automation, allowing me to develop
+                intelligent applications, chatbots, fraud detection systems, and
+                security tools.
+              </p>
+
+              <div className="about-details">
+                <div className="detail-item">
+                  <span>Abhishek Kumar</span>
+                </div>
+                <div className="detail-item">
+                  <span>From:</span>
+                  <p>Hajipur, India</p>
+                </div>
+              </div>
+
+              <motion.div
+                className="fun-fact"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <div className="fact-icon">💡</div>
+                <p>
+                  <strong>Fun Fact:</strong> When I'm not coding, I enjoy
+                  reverse engineering software and building IoT devices!
+                </p>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
-    );
-  }
 
-  return (
-    <section className="hero-section">
-      <div className="particles-background" />
-      
-      <div className="container h-100 position-relative">
-        <div className="row h-100 align-items-center">
-          <div className="col-lg-6 hero-content">
-            <h1 className="display-4 fw-bold mb-4 text-white">
-              Hi, I'm <span className="text-primary">Developer</span>
-            </h1>
-            <p className="lead mb-4 text-white-50">
-              Full Stack Developer | Cybersecurity Enthusiast | AI Explorer
-            </p>
-            <div className="d-flex flex-wrap gap-3">
-              <button className="btn btn-primary btn-lg px-4 py-2">
-                View Projects
-              </button>
-              <button className="btn btn-outline-light btn-lg px-4 py-2">
-                Contact Me
-              </button>
-            </div>
-            
-            <div className="social-links mt-4">
-              {['github', 'linkedin', 'twitter', 'instagram'].map((social) => (
-                <a 
-                  key={social} 
-                  href={`https://${social}.com`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="btn btn-sm btn-outline-light me-2"
+      {/* Education Section */}
+      <section className="education" id="education" ref={educationRef}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+              opacity: educationInView ? 1 : 0,
+              y: educationInView ? 0 : 50,
+            }}
+            transition={{ duration: 0.8 }}
+            className="section-header"
+          >
+            <h2>
+              My <span>Education</span>
+            </h2>
+            <p>My academic journey</p>
+          </motion.div>
+
+          <div className="education-timeline">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{
+                opacity: educationInView ? 1 : 0,
+                y: educationInView ? 0 : 50,
+              }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="timeline-item"
+              whileHover={{ y: -5 }}
+            >
+              <div className="timeline-icon">
+                <FaGraduationCap />
+              </div>
+              <div className="timeline-content">
+                <span className="date">2023 - Present</span>
+                <h3>Bachelor of Technology in Computer Science (IoT)</h3>
+                <h4>Government Engineering College Vaishali</h4>
+                <p>
+                  Gained in-depth knowledge in Data Structures, Algorithms,
+                  Web Development, and Basics of Cybersecurity.
+                  Developed strong foundation in software engineering principles
+                  and problem-solving skills.
+                </p>
+                <div className="timeline-badges">
+                  <span className="badge">GPA: 8.1/10</span>
+                  {/* <span className="badge">Dean's List</span> */}
+                  {/* <span className="badge">Research Assistant</span> */}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="skills" id="skills" ref={ref}>
+        {/* Animated background particles */}
+        <div className="particles-container">
+          <Particles
+            id="tsparticles"
+            init={particlesInit}
+            options={{
+              particles: {
+                number: {
+                  value: 30,
+                  density: {
+                    enable: true,
+                    value_area: 800,
+                  },
+                },
+                color: {
+                  value: "#6c63ff",
+                },
+                shape: {
+                  type: "circle",
+                },
+                opacity: {
+                  value: 0.5,
+                  random: true,
+                },
+                size: {
+                  value: 3,
+                  random: true,
+                },
+                line_linked: {
+                  enable: true,
+                  distance: 150,
+                  color: "#6c63ff",
+                  opacity: 0.4,
+                  width: 1,
+                },
+                move: {
+                  enable: true,
+                  speed: 2,
+                  direction: "none",
+                  random: true,
+                  straight: false,
+                  out_mode: "out",
+                  bounce: false,
+                  attract: {
+                    enable: true,
+                    rotateX: 600,
+                    rotateY: 1200,
+                  },
+                },
+              },
+              interactivity: {
+                detect_on: "canvas",
+                events: {
+                  onhover: {
+                    enable: true,
+                    mode: "grab",
+                  },
+                  onclick: {
+                    enable: true,
+                    mode: "push",
+                  },
+                },
+                modes: {
+                  grab: {
+                    distance: 140,
+                    line_linked: {
+                      opacity: 1,
+                    },
+                  },
+                  push: {
+                    particles_nb: 4,
+                  },
+                },
+              },
+              retina_detect: true,
+            }}
+          />
+        </div>
+
+        <div className="container position-relative">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+              opacity: inView ? 1 : 0,
+              y: inView ? 0 : 50,
+            }}
+            transition={{ duration: 0.8 }}
+            className="section-header"
+          >
+            <h2>
+              My <span>Skills & Interests</span>
+            </h2>
+            <p>What drives me beyond coding</p>
+          </motion.div>
+
+          {/* Enhanced Tabs Navigation */}
+          <motion.div
+            className="skills-tabs"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: inView ? 1 : 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <button
+              className={activeTab === "skills" ? "active" : ""}
+              onClick={() => setActiveTab("skills")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaCode /> Technical Skills
+            </button>
+            <button
+              className={activeTab === "tools" ? "active" : ""}
+              onClick={() => setActiveTab("tools")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaTools /> Tools & Tech
+            </button>
+            <button
+              className={activeTab === "hobbies" ? "active" : ""}
+              onClick={() => setActiveTab("hobbies")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaGamepad /> My Hobbies
+            </button>
+            <button
+              className={activeTab === "interests" ? "active" : ""}
+              onClick={() => setActiveTab("interests")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaLightbulb /> My Interests
+            </button>
+          </motion.div>
+
+          {/* Skills Tab Content */}
+          {activeTab === "skills" && (
+            <div className="skills-container">
+              {skills.map((skill, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{
+                    opacity: inView ? 1 : 0,
+                    y: inView ? 0 : 50,
+                  }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="skill-item"
                 >
-                  <i className={`bi bi-${social}`}></i>
-                </a>
+                  <div className="skill-header">
+                    <motion.div
+                      className="skill-icon"
+                      style={{ color: skill.color }}
+                      whileHover={{ rotate: 15 }}
+                    >
+                      {skill.icon}
+                    </motion.div>
+                    <div className="skill-info">
+                      <span>{skill.name}</span>
+                      <span>{skill.level}%</span>
+                    </div>
+                  </div>
+                  <div className="skill-bar">
+                    <motion.div
+                      className="skill-progress"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${skill.level}%` }}
+                      transition={{ duration: 1.5, delay: index * 0.1 }}
+                      style={{ backgroundColor: skill.color }}
+                    />
+                  </div>
+                </motion.div>
               ))}
             </div>
-          </div>
-          
-          <div className="col-lg-6 hero-3d-model">
-            {!modelLoaded && (
-              <div className="loading-overlay">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-                <div className="progress mt-3" style={{ width: '200px' }}>
-                  <div 
-                    className="progress-bar progress-bar-striped progress-bar-animated" 
-                    role="progressbar" 
-                    style={{ width: `${progress}%` }}
+          )}
+
+          {/* Tools Tab Content */}
+          {activeTab === "tools" && (
+            <motion.div
+              className="tools-grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: inView ? 1 : 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {tools.map((tool, index) => (
+                <motion.div
+                  key={index}
+                  className="tool-item"
+                  whileHover={{
+                    scale: 1.1,
+                    y: -5,
+                    boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <div className="tool-icon">{tool.icon}</div>
+                  {/* <div className="tool-name">{tool.name}</div> */}
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Hobbies Tab Content */}
+          {activeTab === "hobbies" && (
+            <motion.div
+              className="hobbies-grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: inView ? 1 : 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {hobbies.map((hobby, index) => (
+                <motion.div
+                  key={index}
+                  className="hobby-card"
+                  whileHover={{
+                    scale: 1.05,
+                    y: -10,
+                    boxShadow: `0 15px 30px ${hobby.color}33`,
+                  }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  style={{ borderTop: `4px solid ${hobby.color}` }}
+                >
+                  <div className="hobby-icon" style={{ color: hobby.color }}>
+                    {hobby.icon}
+                  </div>
+                  <h3>{hobby.name}</h3>
+                  <p>{hobby.description}</p>
+                  <div
+                    className="hobby-bg"
+                    style={{ backgroundColor: `${hobby.color}10` }}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Interests Tab Content */}
+          {activeTab === "interests" && (
+            <motion.div
+              className="interests-grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: inView ? 1 : 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {interests.map((interest, index) => (
+                <motion.div
+                  key={index}
+                  className="interest-card"
+                  whileHover={{
+                    scale: 1.05,
+                    y: -10,
+                    boxShadow: `0 15px 30px ${interest.color}33`,
+                  }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div
+                    className="interest-icon"
+                    style={{ color: interest.color }}
                   >
-                    {progress}%
+                    {interest.icon}
+                  </div>
+                  <h3>{interest.name}</h3>
+                  <p>{interest.description}</p>
+                  <motion.div
+                    className="interest-wave"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 0.8, 0.5],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    style={{ backgroundColor: interest.color }}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Category Cards (shown only on skills tab) */}
+          {activeTab === "skills" && (
+            <div className="skills-categories">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="category-card"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                <FaCode />
+                <h3>Web Development</h3>
+                <p>MERN Stack, Node.js, JavaScript, HTML/CSS</p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="category-card"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                <FaLaptopCode />
+                <h3>AI/ML</h3>
+                <p>Python, TensorFlow, PyTorch, OpenAI API</p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="category-card"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                <FaShieldAlt />
+                <h3>Cybersecurity</h3>
+                <p>Ethical Hacking, Vulnerability Analysis</p>
+              </motion.div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section className="experience" id="experience" ref={experienceRef}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+              opacity: experienceInView ? 1 : 0,
+              y: experienceInView ? 0 : 50,
+            }}
+            transition={{ duration: 0.8 }}
+            className="section-header"
+          >
+            <h2>
+              My <span>Experience</span>
+            </h2>
+            <p>Where I've worked</p>
+          </motion.div>
+
+          <div className="experience-timeline">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{
+                opacity: experienceInView ? 1 : 0,
+                y: experienceInView ? 0 : 50,
+              }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="timeline-item"
+              whileHover={{ y: -5 }}
+            >
+              <div className="timeline-icon">
+                <FaBriefcase />
+              </div>
+              <div className="timeline-content">
+                <span className="date">2023 - Present</span>
+                <h3>Freelance Developer</h3>
+                <ul className="responsibilities">
+                  <li>
+                    Developed 10+ applications for clients and my college
+                  </li>
+                  <li>
+                    Conducted security audits identifying 20+ vulnerabilities
+                  </li>
+                </ul>
+                <div className="project-highlights">
+                  <h4>Key Projects:</h4>
+                  <div className="projects-grid">
+                    {/* <span>E-commerce Platform</span> */}
+                    {/* <span>AI Chatbot</span> */}
+                    <span>Cybersecurity Fuzzer Application for SIH</span>
+                    <span>Hacakathon Website for college</span>
+                    <span>Game Event Website for college</span>
                   </div>
                 </div>
               </div>
-            )}
-            
-            <ErrorBoundary>
-              <Canvas shadows dpr={[1, 2]} gl={{ antialias: true }}>
-                <ambientLight intensity={0.5} />
-                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-                <pointLight position={[-10, -10, -10]} intensity={0.5} />
-                
-                <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={45} />
-                <OrbitControls 
-                  enableZoom={false} 
-                  enablePan={false} 
-                  autoRotate 
-                  autoRotateSpeed={2} 
-                  maxPolarAngle={Math.PI / 2} 
-                  minPolarAngle={Math.PI / 6}
-                />
-                
-                <Suspense fallback={
-                  <Html center>
-                    <div className="text-white">Loading 3D model...</div>
-                  </Html>
-                }>
-                  <CodingScene 
-                    onLoaded={() => setModelLoaded(true)} 
-                    onProgress={(p) => setProgress(p)}
-                  />
-                </Suspense>
-                
-                <EffectComposer>
-                  <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
-                  <Glitch 
-                    delay={[1.5, 3.5]} 
-                    duration={[0.6, 1.0]} 
-                    strength={[0.3, 1.0]} 
-                    mode={GlitchMode.SPORADIC} 
-                  />
-                </EffectComposer>
-              </Canvas>
-            </ErrorBoundary>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{
+                opacity: experienceInView ? 1 : 0,
+                y: experienceInView ? 0 : 50,
+              }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="timeline-item"
+              whileHover={{ y: -5 }}
+            >
+              <div className="timeline-icon">
+                <FaBriefcase />
+              </div>
+              <div className="timeline-content">
+                <span className="date">2024 - Present</span>
+                <h3>Coding Club Lead</h3>
+                <h4>Government Engineering College Vaishali</h4>
+                <ul className="responsibilities">
+                  <li>
+                    Conducted 10+ workshops on web development and cybersecurity
+                  </li>
+                  <li>Mentored 50+ students in competitive programming</li>
+                  <li>Organized hackathons with 100+ participants</li>
+                  {/* <li>Developed college portal with 90% user satisfaction</li> */}
+                </ul>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{
+                opacity: experienceInView ? 1 : 0,
+                y: experienceInView ? 0 : 50,
+              }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="timeline-item"
+              whileHover={{ y: -5 }}
+            >
+              <div className="timeline-icon">
+                <FaBriefcase />
+              </div>
+              <div className="timeline-content">
+                <span className="date">2025 - Present</span>
+                <h3>Technical Club Lead</h3>
+                <h4>Government Engineering College Vaishali</h4>
+                <ul className="responsibilities">
+                  <li>
+                    Conducted workshops on Arduino Programming and IoT Architecture
+                  </li>
+                  <li>Mentored 10+ students in Arduino Programming</li>
+                  <li>Organized competitions with 100+ participants</li>
+                  {/* <li>Developed college portal with 90% user satisfaction</li> */}
+                </ul>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
-      
-      <div className="scroll-indicator">
-        <div className="mouse">
-          <div className="wheel"></div>
-        </div>
-        <div className="arrow-down"></div>
-      </div>
-    </section>
-  );
-};
+      </section>
 
-// 3D Model Component
-const CodingScene = ({ onLoaded, onProgress }) => {
-  const group = useRef();
-  const { scene, animations } = useGLTF(
-    'https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/laptop/model.gltf',
-    undefined,
-    (loader) => {
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
-      loader.setDRACOLoader(dracoLoader);
-      
-      const loadingManager = new LoadingManager();
-      loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-        const progress = Math.round((itemsLoaded / itemsTotal) * 100);
-        onProgress(progress);
-      };
-      loader.setLoadingManager(loadingManager);
-    }
-  );
-  
-  const { actions } = useAnimations(animations, group);
-  const [hovered, setHovered] = useState(false);
-  
-  useEffect(() => {
-    if (scene && animations && animations.length) {
-      actions[animations[0].name].play();
-      onLoaded();
-    }
-  }, [scene, animations, actions, onLoaded]);
-  
-  useFrame((state) => {
-    if (group.current) {
-      group.current.rotation.y = THREE.MathUtils.lerp(
-        group.current.rotation.y,
-        (state.mouse.x * Math.PI) / 10,
-        0.05
-      );
-      group.current.rotation.x = THREE.MathUtils.lerp(
-        group.current.rotation.x,
-        (state.mouse.y * Math.PI) / 10,
-        0.05
-      );
-      
-      if (hovered) {
-        group.current.position.y = 0.5 + Math.sin(state.clock.getElapsedTime() * 2) * 0.1;
-      }
-    }
-  });
-  
-  return (
-    <group ref={group} dispose={null}>
-      <primitive 
-        object={scene} 
-        position={[0, -1, 0]} 
-        scale={[0.8, 0.8, 0.8]}
-        rotation={[0.1, 0, 0]}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+      {/* Achievements Section */}
+      <section className="achievements" id="achievements" ref={achievementsRef}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+              opacity: achievementsInView ? 1 : 0,
+              y: achievementsInView ? 0 : 50,
+            }}
+            transition={{ duration: 0.8 }}
+            className="section-header"
+          >
+            <h2>
+              My <span>Achievements</span>
+            </h2>
+            <p>Recognitions and awards</p>
+          </motion.div>
+
+          <div className="achievements-grid">
+            {achievements.map((achievement, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: achievementsInView ? 1 : 0,
+                  scale: achievementsInView ? 1 : 0.8,
+                }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                className="achievement-card"
+                onClick={() => toggleAchievement(index)}
+              >
+                <div className="achievement-icon">
+                  <FaTrophy />
+                </div>
+                <h3>{achievement.title}</h3>
+                <p>{achievement.description}</p>
+                <span className="achievement-date">{achievement.date}</span>
+
+                <AnimatePresence>
+                  {expandedAchievement === index && (
+                    <motion.div
+                      className="achievement-details"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p>{achievement.details}</p>
+                      <button
+                        className="close-details"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleAchievement(index);
+                        }}
+                      >
+                        Close
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <motion.div
+                  className="expand-button"
+                  animate={{ rotate: expandedAchievement === index ? 180 : 0 }}
+                >
+                  <FaChevronDown />
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section
+        className="certifications"
+        id="certifications"
+        ref={certificationsRef}
       >
-        <mesh position={[0, 0.9, -0.4]} rotation={[0, 0, 0]}>
-          <planeGeometry args={[1.2, 0.7]} />
-          <meshStandardMaterial color="#000" emissive="#0f0" emissiveIntensity={0.5}>
-            <Html transform occlude="blending" distanceFactor={1.5} position={[0, 0, 0.01]}>
-              <div className="code-screen">
-                <pre>
-                  <code className="language-javascript">
-                    {`// Welcome to my portfolio!
-function greet() {
-  const skills = [
-    'React', 'Three.js', 'Node.js',
-    'Python', 'Cybersecurity', 'AI/ML'
-  ];
-  
-  return \`I'm a developer passionate about 
-    \${skills.join(', ')} and more!\`;
-}`}
-                  </code>
-                </pre>
-              </div>
-            </Html>
-          </meshStandardMaterial>
-        </mesh>
-      </primitive>
-      
-      <FloatingCodeParticles count={50} />
-    </group>
-  );
-};
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+              opacity: certificationsInView ? 1 : 0,
+              y: certificationsInView ? 0 : 50,
+            }}
+            transition={{ duration: 0.8 }}
+            className="section-header"
+          >
+            <h2>
+              My <span>Certifications</span>
+            </h2>
+            <p>Professional credentials</p>
+          </motion.div>
 
-const FloatingCodeParticles = ({ count }) => {
-  const particles = useRef();
-  const symbols = ['{}', '()', '[]', '<>', ';', '=>', '=', '++', '--', '/*', '*/'];
-  
-  useFrame((state) => {
-    if (particles.current) {
-      particles.current.children.forEach((particle, i) => {
-        particle.position.y += Math.sin(state.clock.getElapsedTime() + i) * 0.005;
-        particle.rotation.z += 0.01;
-      });
-    }
-  });
-  
-  return (
-    <group ref={particles}>
-      {Array.from({ length: count }).map((_, i) => {
-        const x = (Math.random() - 0.5) * 5;
-        const y = (Math.random() - 0.5) * 3;
-        const z = (Math.random() - 0.5) * 5;
-        const size = Math.random() * 0.2 + 0.1;
-        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-        
-        return (
-          <Html key={i} position={[x, y, z]} transform>
-            <div 
-              className="code-particle" 
-              style={{
-                fontSize: `${size}rem`,
-                color: `hsl(${Math.random() * 60 + 180}, 80%, 60%)`,
-                opacity: Math.random() * 0.5 + 0.5,
-                textShadow: '0 0 10px currentColor'
-              }}
-            >
-              {symbol}
-            </div>
-          </Html>
-        );
-      })}
-    </group>
-  );
-};
-
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-  
-  componentDidCatch(error, errorInfo) {
-    console.error('3D Render Error:', error, errorInfo);
-  }
-  
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="error-fallback">
-          <i className="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-          <span>3D rendering failed. Showing fallback content.</span>
+          <div className="certifications-grid">
+            {certifications.map((certification, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{
+                  opacity: certificationsInView ? 1 : 0,
+                  y: certificationsInView ? 0 : 50,
+                }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="certification-card"
+              >
+                <div className="certification-icon">
+                  <FaCertificate />
+                </div>
+                <div className="certification-content">
+                  <h3>{certification.name}</h3>
+                  <div className="certification-meta">
+                    <span className="issuer">{certification.issuer}</span>
+                    <span className="date">{certification.date}</span>
+                  </div>
+                  {/* <div className="credential-id">
+                    <span>Credential ID:</span> {certification.credential}
+                  </div>
+                  <a href={certification.link} className="view-credential">
+                    View Credential <FaArrowRight />
+                  </a> */}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+      </section>
+
+    </div>
+  );
+};
+
+// Typewriter effect component
+const TypewriterEffect = ({ text, delay = 100 }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+
+  useEffect(() => {
+    const handleTyping = () => {
+      if (isDeleting) {
+        setDisplayedText((prev) => prev.substring(0, prev.length - 1));
+        if (displayedText === "") {
+          setIsDeleting(false);
+          setLoopNum(loopNum + 1);
+          setCurrentIndex((currentIndex + 1) % text.length);
+        }
+      } else {
+        setDisplayedText(
+          text[currentIndex].substring(0, displayedText.length + 1)
+        );
+        if (displayedText === text[currentIndex]) {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      }
+    };
+
+    const timeout = setTimeout(handleTyping, isDeleting ? delay / 2 : delay);
+    return () => clearTimeout(timeout);
+  }, [displayedText, currentIndex, delay, isDeleting, loopNum, text]);
+
+  return (
+    <span className="typewriter">
+      {displayedText}
+      <span className="cursor">|</span>
+    </span>
+  );
+};
 
 export default Home;
