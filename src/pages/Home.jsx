@@ -33,9 +33,10 @@ import {
   FaRobot,
   FaRocket,
   FaTools,
-  FaPingPong,
-  FaChess
+  FaChess,
+  FaNetworkWired 
 } from "react-icons/fa";
+import { GiPingPongBat } from "react-icons/gi";
 import {
   SiMongodb,
   SiExpress,
@@ -252,7 +253,7 @@ const Home = () => {
   const hobbies = [
     {
       name: "Table Tennis",
-      icon: <FaPingPong />,
+      icon: <GiPingPongBat  />,
       description: "I enjoy playing table tennis, improving my skills and competing.",
       color: "#FF6B6B",
     },
@@ -420,9 +421,8 @@ const Home = () => {
               transition={{ delay: 1.2 }}
             >
               I build{" "}
-              <span className="highlight">scalable web applications</span> and
-              integrate <span className="highlight">AI</span> to solve
-              real-world problems. Passionate about{" "}
+              <span className="highlight">scalable web applications</span>
+              real-world projects and solving problems. Passionate about{" "}
               <span className="highlight">cybersecurity</span> and{" "}
               <span className="highlight">embedded systems</span>.
             </motion.p>
