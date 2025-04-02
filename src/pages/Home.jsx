@@ -431,7 +431,7 @@ const Home = () => {
               <motion.a
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
-                href="/images/abhishek_kumar_resume.pdf"
+                href="/portfolio/images/abhishek_kumar_resume.pdf"
                 download
                 className="btn btn-primary"
                 initial={{ opacity: 0, y: 20 }}
@@ -467,7 +467,7 @@ const Home = () => {
           >
             <div className="image-wrapper">
               <div className="glow-effect"></div>
-              <img src="/images/coding.webp" alt="Abhishek Kumar" />
+              <img src="/portfolio/images/coding.webp" alt="Abhishek Kumar" />
             </div>
           </motion.div>
         </div>
@@ -518,7 +518,7 @@ const Home = () => {
               whileHover={{ y: -10 }}
             >
               <div className="image-border"></div>
-              <img src="/images/abhi.jpg" alt="About Me" />
+              <img src="/portfolio/images/abhi.jpg" alt="About Me" />
             </motion.div>
 
             <motion.div
