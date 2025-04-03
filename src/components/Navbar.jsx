@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
@@ -10,13 +10,12 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [ref, inView] = useInView({ threshold: 0.1 });
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -27,11 +26,32 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  // Function to scroll to a section
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Handle About navigation from other pages
+  const handleAboutClick = (e) => {
+    e.preventDefault();
+    setIsOpen(false);
+
+    if (location.pathname !== '/') {
+      navigate('/'); 
+      setTimeout(() => scrollToSection('about'), 500); 
+    } else {
+      scrollToSection('about');
+    }
+  };
+
   const navLinks = [
     { path: '/', name: 'Home' },
     { path: '/projects', name: 'Projects' },
     { path: '/contact', name: 'Contact' },
-    { path: '/about', name: 'About' },
+    { name: 'About', id: 'about' },
   ];
 
   return (
@@ -44,19 +64,21 @@ const Navbar = () => {
     >
       <div className="container">
         <Link to="/" className="logo">
-          <span>MERN</span>Stack Innovator
+          <span>Tech</span>Portfolio
         </Link>
 
         <div className={`nav-links ${isOpen ? 'active' : ''}`}>
           {navLinks.map((link, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Link to={link.path} onClick={() => setIsOpen(false)}>
-                {link.name}
-              </Link>
+            <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              {link.path ? (
+                <Link to={link.path} onClick={() => setIsOpen(false)}>
+                  {link.name}
+                </Link>
+              ) : (
+                <a href={`#${link.id}`} onClick={handleAboutClick}>
+                  {link.name}
+                </a>
+              )}
             </motion.div>
           ))}
         </div>
