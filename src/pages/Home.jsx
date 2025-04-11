@@ -467,7 +467,7 @@ const Home = () => {
           >
             <div className="image-wrapper">
               <div className="glow-effect"></div>
-              <img src="/portfolio/images/coding.webp" alt="Abhishek Kumar" />
+              <img src="/portfolio/images/my_image.jpg" alt="Abhishek Kumar" />
             </div>
           </motion.div>
         </div>
@@ -518,7 +518,7 @@ const Home = () => {
               whileHover={{ y: -10 }}
             >
               <div className="image-border"></div>
-              <img src="/portfolio/images/abhi.jpg" alt="About Me" />
+              <img src="/portfolio/images/me.jpg" alt="About Me" />
             </motion.div>
 
             <motion.div
@@ -1153,7 +1153,7 @@ const Home = () => {
       </section>
 
       {/* Certifications Section */}
-      <section
+      {/* <section
         className="certifications"
         id="certifications"
         ref={certificationsRef}
@@ -1196,18 +1196,18 @@ const Home = () => {
                     <span className="issuer">{certification.issuer}</span>
                     <span className="date">{certification.date}</span>
                   </div>
-                  {/* <div className="credential-id">
+                  <div className="credential-id">
                     <span>Credential ID:</span> {certification.credential}
                   </div>
                   <a href={certification.link} className="view-credential">
                     View Credential <FaArrowRight />
-                  </a> */}
+                  </a>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );
