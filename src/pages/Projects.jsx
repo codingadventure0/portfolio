@@ -49,15 +49,15 @@ const Projects = () => {
       category: 'Cybersecurity',
       link: '/projects/4'
     },
-    {
-      id: 5,
-      title: 'AI Fraud Detection',
-      description: 'Machine learning model with 95% accuracy in detecting fraud.',
-      image: '/path/to/fraud.jpg',
-      tags: ['AI', 'Machine Learning', 'Python'],
-      category: 'AI/ML',
-      link: '/projects/5'
-    },
+    // {
+    //   id: 5,
+    //   title: 'AI Fraud Detection',
+    //   description: 'Machine learning model with 95% accuracy in detecting fraud.',
+    //   image: '/path/to/fraud.jpg',
+    //   tags: ['AI', 'Machine Learning', 'Python'],
+    //   category: 'AI/ML',
+    //   link: '/projects/5'
+    // },
     {
       id: 6,
       title: 'Faculty Leave Management',

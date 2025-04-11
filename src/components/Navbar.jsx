@@ -41,7 +41,7 @@ const Navbar = () => {
 
     if (location.pathname !== '/') {
       navigate('/'); 
-      setTimeout(() => scrollToSection('about'), 500); 
+      setTimeout(() => scrollToSection('about'), 550); 
     } else {
       scrollToSection('about');
     }

@@ -84,7 +84,7 @@ const MouseEffect = () => {
       requestAnimationFrame(animate);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    // window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleClick);
     animate();
 
