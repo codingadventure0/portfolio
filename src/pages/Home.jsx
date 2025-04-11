@@ -34,7 +34,8 @@ import {
   FaRocket,
   FaTools,
   FaChess,
-  FaNetworkWired 
+  FaNetworkWired,
+  FaMicrochip
 } from "react-icons/fa";
 import { GiPingPongBat } from "react-icons/gi";
 import {
@@ -217,6 +218,14 @@ const Home = () => {
         "Designed and built a functional scale model of ISRO's Pragyan rover with Arduino-based autonomous navigation system. Recognized by ISRO scientists for technical excellence and innovation in embedded systems.",
       date: "August 2024",
     },
+    {
+      title: "Moon Rover Project Showcase",
+      description:
+        "Interactive ESP32-based moon rover model with advanced features.",
+      details:
+        "Engineered a dual-ESP32 controlled moon rover with joystick-based remote navigation, live video streaming via CP-Plus camera, and multiple smart features. The model is currently on public display at Patna Planetarium, showcasing innovation in embedded systems and IoT integration.",
+      date: "February 2024",
+    },
   ];
 
   const certifications = [
@@ -253,14 +262,16 @@ const Home = () => {
   const hobbies = [
     {
       name: "Table Tennis",
-      icon: <GiPingPongBat  />,
-      description: "I enjoy playing table tennis, improving my skills and competing.",
+      icon: <GiPingPongBat />,
+      description:
+        "I enjoy playing table tennis, improving my skills and competing.",
       color: "#FF6B6B",
     },
     {
       name: "Chess",
-      icon: <FaChess /> ,
-      description: "I am a chess player, strategizing and competing in various formats.",
+      icon: <FaChess />,
+      description:
+        "I am a chess player, strategizing and competing in various formats.",
       color: "#6c63ff",
     },
     {
@@ -282,11 +293,9 @@ const Home = () => {
       color: "#00BFA6",
     },
   ];
-  
 
   // Interests data
   const interests = [
-
     {
       name: "Software Development",
       icon: <FaCode />,
@@ -312,7 +321,6 @@ const Home = () => {
       color: "#FFA500",
     },
   ];
-  
 
   // Particles.js configuration
   const particlesInit = async (engine) => {
@@ -325,12 +333,32 @@ const Home = () => {
 
   // Floating social icons animation
   const socialIcons = [
-    { icon: <FaGithub />, name: "GitHub", link: "https://github.com/codingadventure0", color: "#333" },
-    { icon: <FaLinkedin />, name: "LinkedIn", link: "https://www.linkedin.com/in/abhishek-kumar977/", color: "#0077b5" },
+    {
+      icon: <FaGithub />,
+      name: "GitHub",
+      link: "https://github.com/codingadventure0",
+      color: "#333",
+    },
+    {
+      icon: <FaLinkedin />,
+      name: "LinkedIn",
+      link: "https://www.linkedin.com/in/abhishek-kumar977/",
+      color: "#0077b5",
+    },
     { icon: <SiLeetcode />, name: "LeetCode", link: "#", color: "#f89f1b" },
-    { icon: <SiHackerrank />, name: "HackerRank", link: "https://www.hackerrank.com/profile/abhibth977", color: "#2ec866" },
+    {
+      icon: <SiHackerrank />,
+      name: "HackerRank",
+      link: "https://www.hackerrank.com/profile/abhibth977",
+      color: "#2ec866",
+    },
     { icon: <FaTwitter />, name: "Twitter", link: "#", color: "#1da1f2" },
-    { icon: <FiMail />, name: "Email", link: "abhishek23iot17.gecv@gmail.com", color: "#ea4335" },
+    {
+      icon: <FiMail />,
+      name: "Email",
+      link: "abhishek23iot17.gecv@gmail.com",
+      color: "#ea4335",
+    },
   ];
 
   return (
@@ -407,11 +435,10 @@ const Home = () => {
                     "Node.js & JavaScript Enthusiast",
                     "Basic Cybersecurity Specialist",
                     "Embedded Systems Engineer",
-                    "UI/UX Designer"
+                    "UI/UX Designer",
                   ]}
                   delay={100}
                 />
-
               </motion.h2>
             </motion.div>
 
@@ -616,10 +643,10 @@ const Home = () => {
                 <h3>Bachelor of Technology in Computer Science (IoT)</h3>
                 <h4>Government Engineering College Vaishali</h4>
                 <p>
-                  Gained in-depth knowledge in Data Structures, Algorithms,
-                  Web Development, and Basics of Cybersecurity.
-                  Developed strong foundation in software engineering principles
-                  and problem-solving skills.
+                  Gained in-depth knowledge in Data Structures, Algorithms, Web
+                  Development, and Basics of Cybersecurity. Developed strong
+                  foundation in software engineering principles and
+                  problem-solving skills.
                 </p>
                 <div className="timeline-badges">
                   <span className="badge">GPA: 8.1/10</span>
@@ -752,20 +779,20 @@ const Home = () => {
               <FaTools /> Tools & Tech
             </button>
             <button
-              className={activeTab === "hobbies" ? "active" : ""}
-              onClick={() => setActiveTab("hobbies")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaGamepad /> My Hobbies
-            </button>
-            <button
               className={activeTab === "interests" ? "active" : ""}
               onClick={() => setActiveTab("interests")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <FaLightbulb /> My Interests
+            </button>
+            <button
+              className={activeTab === "hobbies" ? "active" : ""}
+              onClick={() => setActiveTab("hobbies")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaGamepad /> My Hobbies
             </button>
           </motion.div>
 
@@ -925,40 +952,72 @@ const Home = () => {
           {/* Category Cards (shown only on skills tab) */}
           {activeTab === "skills" && (
             <div className="skills-categories">
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="category-card"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-              >
-                <FaCode />
+            <motion.div
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="category-card"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-icon">
+                  <FaCode />
+                </div>
                 <h3>Web Development</h3>
                 <p>MERN Stack, Node.js, JavaScript, HTML/CSS</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="category-card"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-              >
-                <FaLaptopCode />
-                <h3>AI/ML</h3>
-                <p>Python, TensorFlow, PyTorch, OpenAI API</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="category-card"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-              >
-                <FaShieldAlt />
+                <div className="tech-stack">
+                  <span>React</span>
+                  <span>Express</span>
+                  <span>MongoDB</span>
+                </div>
+              </div>
+            </motion.div>
+          
+            <motion.div
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="category-card"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-icon">
+                  <FaMicrochip />
+                </div>
+                <h3>Embedded Systems</h3>
+                <p>IoT, Microcontrollers, Hardware Programming</p>
+                <div className="tech-stack">
+                  <span>Arduino</span>
+                  <span>ESP32</span>
+                  <span>Raspberry Pi</span>
+                </div>
+              </div>
+            </motion.div>
+          
+            <motion.div
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="category-card"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
+              <div className="card-glow"></div>
+              <div className="card-content">
+                <div className="card-icon">
+                  <FaShieldAlt />
+                </div>
                 <h3>Cybersecurity</h3>
                 <p>Ethical Hacking, Vulnerability Analysis</p>
-              </motion.div>
-            </div>
+                <div className="tech-stack">
+                  <span>Pen Testing</span>
+                  <span>Networking</span>
+                  <span>Security</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
           )}
         </div>
       </section>
@@ -999,9 +1058,7 @@ const Home = () => {
                 <span className="date">2023 - Present</span>
                 <h3>Freelance Developer</h3>
                 <ul className="responsibilities">
-                  <li>
-                    Developed 10+ applications for clients and my college
-                  </li>
+                  <li>Developed 10+ applications for clients and my college</li>
                   <li>
                     Conducted security audits identifying 20+ vulnerabilities
                   </li>
@@ -1066,7 +1123,8 @@ const Home = () => {
                 <h4>Government Engineering College Vaishali</h4>
                 <ul className="responsibilities">
                   <li>
-                    Conducted workshops on Arduino Programming and IoT Architecture
+                    Conducted workshops on Arduino Programming and IoT
+                    Architecture
                   </li>
                   <li>Mentored 10+ students in Arduino Programming</li>
                   <li>Organized competitions with 100+ participants</li>
@@ -1110,6 +1168,7 @@ const Home = () => {
                 className="achievement-card"
                 onClick={() => toggleAchievement(index)}
               >
+                <div className="animated-border"></div>
                 <div className="achievement-icon">
                   <FaTrophy />
                 </div>
@@ -1208,7 +1267,6 @@ const Home = () => {
           </div>
         </div>
       </section> */}
-
     </div>
   );
 };
