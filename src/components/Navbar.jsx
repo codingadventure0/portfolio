@@ -48,7 +48,7 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: '/', name: 'Home' },
+    { path: '/portfolio', name: 'Home' },
     { path: '/projects', name: 'Projects' },
     { path: '/contact', name: 'Contact' },
     { name: 'About', id: 'about' },
@@ -63,7 +63,7 @@ const Navbar = () => {
       className={`navbar ${scrolled ? 'scrolled' : ''}`}
     >
       <div className="container">
-        <Link to="/" className="logo">
+        <Link to="/portfolio" className="logo">
           <span>MERN</span>Stack Innovator
         </Link>
 

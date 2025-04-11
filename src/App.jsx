@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-// import Projects from './pages/Projects';
+import Projects from './pages/Projects';
 // import ProjectDetails from './pages/ProjectDetails';
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
@@ -32,7 +32,7 @@ function App() {
           {/* <Home /> */}
           <Routes>
             <Route path="/portfolio" element={<Home />} exact/>
-            {/* <Route path="/projects" element={<Projects />} exact/> */}
+            <Route path="/projects" element={<Projects />} exact/>
             {/* <Route path="/projects/:id" element={<ProjectDetails />} exact/> */}
             <Route path="/contact" element={<Contact />} exact/>
             {/* <Route path="/about" element={<About />} exact/> */}

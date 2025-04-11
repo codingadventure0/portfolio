@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import emailjs from 'emailjs-com';
-import { FaPaperPlane, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaPaperPlane, FaMapMarkerAlt, FaPhone, FaEnvelope, FaLinkedin, FaGithub } from 'react-icons/fa';
 import '../assets/styles/contact.css';
 import MouseEffect from '../components/MouseEffect'
 
@@ -55,6 +55,40 @@ const Contact = () => {
     });
   };
 
+  const contactItems = [
+    {
+      icon: <FaMapMarkerAlt />,
+      title: "Location",
+      content: "Hajipur, India",
+      onClick: () => window.open("https://www.google.com/maps/place/Hajipur,+Bihar", "_blank")
+    },
+    {
+      icon: <FaEnvelope />,
+      title: "Email",
+      content: "abhishek23iot17.gecv@gmail.com",
+      onClick: () => window.open("mailto:abhishek23iot17.gecv@gmail.com", "_blank")
+    },
+    {
+      icon: <FaPhone />,
+      title: "Phone",
+      content: "+91 9523945646",
+      onClick: () => window.open("tel:+919523945646", "_blank")
+    }
+  ];
+
+  // const socialLinks = [
+  //   {
+  //     icon: <FaLinkedin />,
+  //     url: "https://www.linkedin.com/in/abhishek-kumar977/",
+  //     name: "LinkedIn"
+  //   },
+  //   {
+  //     icon: <FaGithub />,
+  //     url: "https://github.com/codingadventure0",
+  //     name: "GitHub"
+  //   }
+  // ];
+
   return (
     <div className="contact-page" ref={ref}>
       <MouseEffect/>
@@ -72,61 +106,103 @@ const Contact = () => {
 
       <section className="contact-section">
         <div className="container">
-          <div className="contact-grid">
+          <motion.div 
+            className="contact-grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: inView ? 1 : 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : -50 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className="contact-info"
             >
-              <h2>Contact Information</h2>
-              <p>Feel free to reach out to me for any questions or opportunities.</p>
+              <motion.h2 
+                whileInView={{ x: 0 }}
+                initial={{ x: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                Contact Information
+              </motion.h2>
+              <motion.p
+                whileInView={{ x: 0 }}
+                initial={{ x: -20 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+              >
+                Feel free to reach out to me for any questions or opportunities.
+              </motion.p>
 
               <div className="info-items">
-                <div className="info-item">
-                  <div className="info-icon">
-                    <FaMapMarkerAlt />
-                  </div>
-                  <div className="info-content">
-                    <h3>Location</h3>
-                    <p>Hajipur, India</p>
-                  </div>
-                </div>
-                <div className="info-item">
-                  <div className="info-icon">
-                    <FaEnvelope />
-                  </div>
-                  <div className="info-content">
-                    <h3>Email</h3>
-                    <p>abhishek23iot17.gecv@gmail.com</p>
-                  </div>
-                </div>
-                <div className="info-item">
-                  <div className="info-icon">
-                    <FaPhone />
-                  </div>
-                  <div className="info-content">
-                    <h3>Phone</h3>
-                    <p>+91 9523945646</p>
-                  </div>
-                </div>
+                {contactItems.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="info-item"
+                    whileHover={{ y: -5 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
+                  >
+                    <div className="info-icon">
+                      {item.icon}
+                    </div>
+                    <div className="info-content">
+                      <h3>{item.title}</h3>
+                      <p>{item.content}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
-              <div className="social-links">
-                <a href="https://www.linkedin.com/in/abhishek-kumar977/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href="https://github.com/codingadventure0" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="#" target="_blank" rel="noopener noreferrer">Twitter</a>
-              </div>
+              <motion.div 
+                className="social-links"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                {/* <h3>Follow Me</h3>
+                <div className="social-icons">
+                  {socialLinks.map((link, index) => (
+                    <motion.a
+                      key={index}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ y: -5, scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
+                    >
+                      {link.icon}
+                      <span>{link.name}</span>
+                    </motion.a>
+                  ))}
+                </div> */}
+              </motion.div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : 50 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="contact-form-container"
             >
+              <motion.h2
+                whileInView={{ x: 0 }}
+                initial={{ x: 20 }}
+                transition={{ duration: 0.4 }}
+              >
+                Send Me a Message
+              </motion.h2>
+              
               <form ref={formRef} onSubmit={handleSubmit} className="contact-form">
-                <div className="form-group">
+                <motion.div
+                  className="form-group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                >
                   <input
                     type="text"
                     name="name"
@@ -135,8 +211,14 @@ const Contact = () => {
                     placeholder="Your Name"
                     required
                   />
-                </div>
-                <div className="form-group">
+                </motion.div>
+                
+                <motion.div
+                  className="form-group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                >
                   <input
                     type="email"
                     name="email"
@@ -145,8 +227,14 @@ const Contact = () => {
                     placeholder="Your Email"
                     required
                   />
-                </div>
-                <div className="form-group">
+                </motion.div>
+                
+                <motion.div
+                  className="form-group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.6 }}
+                >
                   <input
                     type="text"
                     name="subject"
@@ -155,8 +243,14 @@ const Contact = () => {
                     placeholder="Subject"
                     required
                   />
-                </div>
-                <div className="form-group">
+                </motion.div>
+                
+                <motion.div
+                  className="form-group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.7 }}
+                >
                   <textarea
                     name="message"
                     value={formData.message}
@@ -165,33 +259,50 @@ const Contact = () => {
                     rows="5"
                     required
                   ></textarea>
-                </div>
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  disabled={isSubmitting}
-                  className="submit-button"
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.8 }}
                 >
-                  {isSubmitting ? 'Sending...' : (
-                    <>
-                      <FaPaperPlane /> Send Message
-                    </>
+                  <motion.button
+                    type="submit"
+                    whileHover={{ 
+                      scale: 1.05,
+                      boxShadow: "0 5px 15px rgba(108, 99, 255, 0.4)"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    disabled={isSubmitting}
+                    className="submit-button"
+                  >
+                    {isSubmitting ? (
+                      <span className="spinner"></span>
+                    ) : (
+                      <>
+                        <FaPaperPlane /> Send Message
+                      </>
+                    )}
+                  </motion.button>
+                </motion.div>
+                
+                <AnimatePresence>
+                  {submitStatus && (
+                    <motion.div
+                      className={`form-message ${submitStatus}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                    >
+                      {submitStatus === 'success' 
+                        ? 'Message sent successfully!' 
+                        : 'Failed to send message. Please try again.'}
+                    </motion.div>
                   )}
-                </motion.button>
-                {submitStatus === 'success' && (
-                  <div className="form-message success">
-                    Message sent successfully!
-                  </div>
-                )}
-                {submitStatus === 'error' && (
-                  <div className="form-message error">
-                    Failed to send message. Please try again.
-                  </div>
-                )}
+                </AnimatePresence>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
