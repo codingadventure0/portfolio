@@ -36,11 +36,11 @@ const Navbar = () => {
 
   // Handle About navigation from other pages
   const handleAboutClick = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setIsOpen(false);
 
     if (location.pathname !== '/') {
-      navigate('/'); 
+      navigate('/portfolio'); 
       setTimeout(() => scrollToSection('about'), 550); 
     } else {
       scrollToSection('about');
@@ -75,7 +75,7 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ) : (
-                <a href={`#${link.id}`} onClick={handleAboutClick}>
+                <a href={`#${link.id}`} onClick={() => handleAboutClick()}>
                   {link.name}
                 </a>
               )}

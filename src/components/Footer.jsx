@@ -50,17 +50,17 @@ const Footer = () => {
             <h3>Quick Links</h3>
             <ul>
               <li>
-                <Link to="/portfolio" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/portfolio" onClick={() => handleNavigate()}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="#about" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="#about" onClick={() => handleNavigate()}>
                   About
                 </Link>
               </li>
               <li>
-                <Link to="/projects" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <Link to="/projects" onClick={() => handleNavigate()}>
                   Projects
                 </Link>
               </li>

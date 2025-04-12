@@ -217,11 +217,7 @@
 .project-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg, 
-    rgba(108, 99, 255, 0.95) 0%, 
-    rgba(78, 69, 225, 0.95) 100%
-  );
+  background: linear-gradient(135deg, rgb(58 58 58 / 95%) 0%, rgb(86 84 119 / 95%) 100%);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -5,6 +5,17 @@ import ProjectCard from '../components/ProjectCard';
 import '../assets/styles/projects.css';
 import MouseEffect from '../components/MouseEffect';
 
+// Importing Imges
+import pragyanImage from '/images/KnowYourPragyan.jpeg';
+import marsImage from '/images/Mars.jpg';
+import leave from '/images/leave.png';
+import jarvis from '/images/jarvis.jpg';
+import fuzzer from '/images/Fuzzer.webp';
+import alumni from '/images/alumni.jpeg';
+import AirbnbClone from '/images/AirbnbClone.webp';
+import robotCar from '/images/robotCar.jpg';
+
+
 const Projects = () => {
   const [ref, inView] = useInView({ threshold: 0.1 });
   const [activeFilter, setActiveFilter] = useState('All');
@@ -13,9 +24,9 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
-      title: 'Pragyan Rover Model',
-      description: 'Chandrayaan 3 simulation with Arduino and ESP32 microcontrollers.',
-      image: '/path/to/rover1.jpg',
+      title: 'Pragyan Rover Model (Chandrayaan 3 Simulation)',
+      description: 'Remote-controlled rover simulating ISRO’s Pragyan rover operations.',
+      image: pragyanImage ,
       tags: ['Embedded Systems', 'IoT', 'Arduino'],
       category: 'Embedded Systems',
       link: '/projects/1',
@@ -24,8 +35,8 @@ const Projects = () => {
     {
       id: 2,
       title: 'Mars Rover Model',
-      description: 'Joystick-controlled rover with real-time photo/video transmission.',
-      image: '/path/to/rover2.jpg',
+      description: 'Joystick-controlled rover using dual ESP32 with live video feed and display support.',
+      image: marsImage,
       tags: ['ESP32', 'IoT', 'Real-time'],
       category: 'Embedded Systems',
       link: '/projects/2'
@@ -34,7 +45,7 @@ const Projects = () => {
       id: 3,
       title: 'GEMINI-AI Jarvis',
       description: 'AI-powered personal assistant with Google Gemini and OpenAI integration.',
-      image: '/path/to/jarvis.jpg',
+      image: jarvis,
       tags: ['AI', 'NLP', 'Automation'],
       category: 'AI/ML',
       link: '/projects/3',
@@ -44,29 +55,47 @@ const Projects = () => {
       id: 4,
       title: 'Web Application Fuzzer',
       description: 'Security tool to identify vulnerabilities in web applications.',
-      image: '/path/to/fuzzer.jpg',
+      image: fuzzer,
       tags: ['Cybersecurity', 'Python', 'Security'],
       category: 'Cybersecurity',
       link: '/projects/4'
     },
-    // {
-    //   id: 5,
-    //   title: 'AI Fraud Detection',
-    //   description: 'Machine learning model with 95% accuracy in detecting fraud.',
-    //   image: '/path/to/fraud.jpg',
-    //   tags: ['AI', 'Machine Learning', 'Python'],
-    //   category: 'AI/ML',
-    //   link: '/projects/5'
-    // },
     {
-      id: 6,
+      id: 5,
       title: 'Faculty Leave Management',
       description: 'Full-stack application with role-based authentication.',
-      image: '/path/to/leave.jpg',
+      image: leave,
       tags: ['Node.Js', 'MongoDB', 'Full-stack'],
       category: 'Web Development',
       link: '/projects/6'
     },
+    {
+      id: 6,
+      title: 'Wanderlust - Airbnb Clone',
+      description: 'Online rental marketplace with secure booking and property listing features.',
+      image: AirbnbClone,
+      tags: ['Django', 'PostgreSQL', 'Full-stack'],
+      category: 'Web Development',
+      link: '/projects/6'
+    },
+    {
+      id: 7,
+      title: 'Multipurpose Robot Car',
+      description: 'Robot car with voice/manual/obstacle/human-following modes and real-world applications.',
+      image: robotCar,
+      tags: ['Arduino', 'Sensors', 'Robotics'],
+      category: 'Embedded Systems',
+      link: '/projects/7'
+    },
+    {
+      id: 8,
+      title: 'Advanced Alumni Portal(ProtoType)',
+      description: 'Interactive alumni directory with geolocation mapping and dynamic filters.',
+      image: alumni,
+      tags: ['React', 'Node.js', 'MongoDB'],
+      category: 'Web Development',
+      link: '/projects/9'
+    }
   ];
 
   const filters = ['All', 'Web Development', 'AI/ML', 'Embedded Systems', 'Cybersecurity'];
