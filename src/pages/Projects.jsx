@@ -74,7 +74,7 @@ const Projects = () => {
       title: 'Wanderlust - Airbnb Clone',
       description: 'Online rental marketplace with secure booking and property listing features.',
       image: AirbnbClone,
-      tags: ['Django', 'PostgreSQL', 'Full-stack'],
+      tags: ['Node.Js', 'MongoDB', 'Full-stack'],
       category: 'Web Development',
       link: '/projects/6'
     },

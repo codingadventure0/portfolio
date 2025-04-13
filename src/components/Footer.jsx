@@ -54,11 +54,11 @@ const Footer = () => {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="#about" onClick={() => handleNavigate()}>
                   About
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/projects" onClick={() => handleNavigate()}>
                   Projects
