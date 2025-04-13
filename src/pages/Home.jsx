@@ -1065,7 +1065,7 @@ const Home = () => {
                 </ul>
                 <div className="project-highlights">
                   <h4>Key Projects:</h4>
-                  <div className="projects-grid">
+                  <div className="projects-grid-home">
                     {/* <span>E-commerce Platform</span> */}
                     {/* <span>AI Chatbot</span> */}
                     <span>Cybersecurity Fuzzer Application for SIH</span>

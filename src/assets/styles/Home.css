@@ -600,15 +600,15 @@ a {
   color: var(--dark-color);
 }
 
-.projects-grid {
+.projects-grid-home {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.projects-grid span {
+.projects-grid-home span {
   background-color: rgba(108, 99, 255, 0.1);
-  color: var(--dark-color);
+  color: var(--primary-color);
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
