@@ -608,7 +608,7 @@ a {
 
 .projects-grid span {
   background-color: rgba(108, 99, 255, 0.1);
-  color: var(--primary-color);
+  color: var(--dark-color);
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -1465,7 +1465,7 @@ a {
   .hero .container {
     flex-direction: column;
     text-align: center;
-    padding-top: 100px;
+    /* padding-top: 100px; */
     padding-bottom: 50px;
   }
 

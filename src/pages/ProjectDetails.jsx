@@ -264,7 +264,7 @@ const ProjectDetails = () => {
                   <FaGithub /> View Code
                 </motion.a>
               )}
-              {project.liveLink && (
+              {/* {project.liveLink && (
                 <motion.a
                   href={project.liveLink}
                   target="_blank"
@@ -274,7 +274,7 @@ const ProjectDetails = () => {
                 >
                   <FaExternalLinkAlt /> Live Demo
                 </motion.a>
-              )}
+              )} */}
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ function App() {
     // Simulate loading your app
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 4000); // Adjust time as needed (matches loader animation)
+    }, 2000); // Adjust time as needed (matches loader animation)
 
     return () => clearTimeout(timer);
   }, []);
