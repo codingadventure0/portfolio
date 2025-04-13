@@ -40,7 +40,7 @@ const Navbar = () => {
     setIsOpen(false);
 
     if (location.pathname !== '/') {
-      navigate('/portfolio'); 
+      navigate('/'); 
       setTimeout(() => scrollToSection('about'), 550); 
     } else {
       scrollToSection('about');
@@ -48,7 +48,7 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: '/portfolio', name: 'Home' },
+    { path: '/', name: 'Home' },
     { path: '/projects', name: 'Projects' },
     { path: '/contact', name: 'Contact' },
     { name: 'About', id: 'about' },
@@ -63,7 +63,7 @@ const Navbar = () => {
       className={`navbar ${scrolled ? 'scrolled' : ''}`}
     >
       <div className="container">
-        <Link to="/portfolio" className="logo">
+        <Link to="/" className="logo">
           <span>MERN</span>Stack Innovator
         </Link>
 

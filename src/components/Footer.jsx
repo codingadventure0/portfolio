@@ -50,7 +50,7 @@ const Footer = () => {
             <h3>Quick Links</h3>
             <ul>
               <li>
-                <Link to="/portfolio" onClick={() => handleNavigate()}>
+                <Link to="/" onClick={() => handleNavigate()}>
                   Home
                 </Link>
               </li>

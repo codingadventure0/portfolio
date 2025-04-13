@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaCode, FaRobot, FaShieldAlt, FaCalendarAlt, FaMapMarkerAlt, FaTools } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaCode, FaRobot, FaShieldAlt, FaCalendarAlt, FaTools } from 'react-icons/fa';
 import { SiArduino, SiPython, SiReact, SiNodedotjs } from 'react-icons/si';
-// import '../assets/styles/projectsdetails.css';
-import MouseEffect from '../components/MouseEffect';
-// import ProjectGallery from '../components/ProjectGallery';
+import '../assets/styles/projectsdetails.css';
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isBackToTopVisible, setIsBackToTopVisible] = useState(false);
 
   const projects = [
     {
@@ -31,7 +28,7 @@ const ProjectDetails = () => {
       ],
       technologies: ['Arduino', 'ESP32', 'C++', 'Bluetooth Module', 'WebCam'],
       images: [
-        '/images/pragyan-1.jpg',
+        '/images/pragyan-project.jpg',
         '/images/pragyan-2.jpg',
         '/images/pragyan-3.jpg'
       ]
@@ -53,9 +50,10 @@ const ProjectDetails = () => {
       ],
       technologies: ['ESP32', 'Camera Module', 'LED Display', 'Wireless Transmission'],
       images: [
-        '/images/marsrover-1.jpg',
-        '/images/marsrover-2.jpg',
-        '/images/marsrover-3.jpg'
+        '/images/Mars.jpg',
+        '/images/Mars-rover.jpg',
+        '/images/rover-remote.jpg',
+        '/images/mars-group.jpg',
       ]
     },
     {
@@ -191,235 +189,183 @@ const ProjectDetails = () => {
     }
   ];
 
-  const project = projects.find(p => p.id === parseInt(id));
-
   useEffect(() => {
-    window.scrollTo(0, 0);
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-    });
+    const handleScroll = () => {
+      setIsBackToTopVisible(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const project = projects.find(p => p.id === parseInt(id));
 
   if (!project) {
     return (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="project-not-found"
-      >
+      <div className="project-not-found">
         <h2>Project not found</h2>
         <button onClick={() => navigate('/projects')}>Back to Projects</button>
-      </motion.div>
+      </div>
     );
   }
 
-  // Get appropriate icon based on project category
   const getCategoryIcon = (tags) => {
     if (tags.some(tag => tag.includes('AI') || tag.includes('Assistant'))) {
-      return <FaRobot className="category-icon" />;
+      return <FaRobot className="project-category-icon" />;
     } else if (tags.some(tag => tag.includes('Embedded') || tag.includes('IoT'))) {
-      return <SiArduino className="category-icon" />;
+      return <SiArduino className="project-category-icon" />;
     } else if (tags.some(tag => tag.includes('Cybersecurity'))) {
-      return <FaShieldAlt className="category-icon" />;
+      return <FaShieldAlt className="project-category-icon" />;
     } else if (tags.some(tag => tag.includes('Full-stack'))) {
-      return <FaCode className="category-icon" />;
+      return <FaCode className="project-category-icon" />;
     } else if (tags.some(tag => tag.includes('Web'))) {
-      return <SiReact className="category-icon" />;
+      return <SiReact className="project-category-icon" />;
     } else if (tags.some(tag => tag.includes('Node'))) {
-      return <SiNodedotjs className="category-icon" />;
+      return <SiNodedotjs className="project-category-icon" />;
     } else if (tags.some(tag => tag.includes('Python'))) {
-      return <SiPython className="category-icon" />;
+      return <SiPython className="project-category-icon" />;
     }
-    return <FaTools className="category-icon" />;
+    return <FaTools className="project-category-icon" />;
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
+    <div className="project-details-container">
+      {/* Hero Section */}
+      <motion.section 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="project-details-page"
+        className="project-details-hero"
+        style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), url(${project.image})` }}
       >
-        <MouseEffect />
-        
-        {/* Hero Section */}
-        <motion.section
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="project-hero"
-          style={{ 
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), url(${project.image})`,
-            backgroundAttachment: 'fixed'
-          }}
-        >
-          <div className="hero-overlay"></div>
-          <div className="container">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="back-button"
-            >
-              <button onClick={() => navigate('/projects')}>
-                <FaArrowLeft /> Back to Projects
-              </button>
-            </motion.div>
+        <div className="project-details-hero-content">
+          <motion.button
+            onClick={() => navigate('/projects')}
+            className="project-details-back-button"
+            whileHover={{ x: -5 }}
+          >
+            <FaArrowLeft /> Back to Projects
+          </motion.button>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="hero-content"
-            >
-              <div className="project-category">
-                {getCategoryIcon(project.tags)}
-                <span>{project.tags[0]}</span>
-              </div>
-              <h1>{project.title}</h1>
-              <p>{project.description}</p>
-              <div className="project-links">
-                {project.githubLink && (
-                  <motion.a
-                    whileHover={{ y: -3, boxShadow: '0 5px 15px rgba(108, 99, 255, 0.4)' }}
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub /> View Code
-                  </motion.a>
-                )}
-                {project.liveLink && (
-                  <motion.a
-                    whileHover={{ y: -3, boxShadow: '0 5px 15px rgba(255, 255, 255, 0.2)' }}
-                    className="live-demo"
-                    href={project.liveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaExternalLinkAlt /> Live Demo
-                  </motion.a>
-                )}
-              </div>
-            </motion.div>
+          <div className="project-details-header">
+            <div className="project-details-category">
+              {getCategoryIcon(project.tags)}
+              <span>{project.tags[0]}</span>
+            </div>
+            <h1>{project.title}</h1>
+            <p>{project.description}</p>
+            <div className="project-details-links">
+              {project.githubLink && (
+                <motion.a
+                  href={project.githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -3 }}
+                >
+                  <FaGithub /> View Code
+                </motion.a>
+              )}
+              {project.liveLink && (
+                <motion.a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-details-live-link"
+                  whileHover={{ y: -3 }}
+                >
+                  <FaExternalLinkAlt /> Live Demo
+                </motion.a>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Main Content */}
+      <section className="project-details-content">
+        <div className="project-details-overview">
+          <div className="project-details-description">
+            <h2>Project Overview</h2>
+            <p>{project.longDescription}</p>
           </div>
 
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="scroll-indicator"
-          >
-            <div className="mouse">
-              <div className="wheel"></div>
-            </div>
-            <span>Scroll Down</span>
-          </motion.div>
-        </motion.section>
-
-        {/* Main Content */}
-        <section className="project-content">
-          <div className="container">
-            {/* Overview Section */}
-            <div className="project-overview">
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="project-description"
-              >
-                <h2>Project <span>Overview</span></h2>
-                <p>{project.longDescription}</p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="project-details"
-              >
-                <div className="details-card">
-                  <h3>Project <span>Details</span></h3>
-                  <div className="detail-item">
-                    <span>Category:</span>
-                    <div className="tags">
-                      {project.tags.map((tag, i) => (
-                        <span key={i} className="tag">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="detail-item">
-                    <span>Technologies:</span>
-                    <div className="tech-stack">
-                      {project.technologies.map((tech, i) => (
-                        <span key={i} className="tech">{tech}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="detail-item">
-                    <span>Date:</span>
-                    <p><FaCalendarAlt /> 2023</p>
-                  </div>
+          <div className="project-details-meta">
+            <div className="project-details-card">
+              <h3>Project Details</h3>
+              <div className="project-details-item">
+                <span>Category:</span>
+                <div className="project-details-tags">
+                  {project.tags.map((tag, i) => (
+                    <span key={i}>{tag}</span>
+                  ))}
                 </div>
-              </motion.div>
+              </div>
+              <div className="project-details-item">
+                <span>Technologies:</span>
+                <div className="project-details-tech">
+                  {project.technologies.map((tech, i) => (
+                    <span key={i}>{tech}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="project-details-item">
+                <span>Date:</span>
+                <p><FaCalendarAlt /> 2023</p>
+              </div>
             </div>
+          </div>
+        </div>
 
-            {/* Features Section */}
-            <div className="project-features">
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
+        {/* Features Section */}
+        <div className="project-details-features">
+          <h2>Key Features</h2>
+          <div className="project-features-grid">
+            {project.features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="project-feature-card"
               >
-                Key <span>Features</span>
-              </motion.h2>
-              
-              <div className="features-grid">
-                {project.features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="feature-card"
-                    whileHover={{ y: -10 }}
-                  >
-                    <div className="feature-number">{index + 1}</div>
-                    <h3>{feature}</h3>
-                    <div className="feature-highlight"></div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Gallery Section */}
-            {/* <ProjectGallery images={project.images} title={project.title} /> */}
+                <div className="project-feature-number">{index + 1}</div>
+                <h3>{feature}</h3>
+              </motion.div>
+            ))}
           </div>
-        </section>
+        </div>
 
-        {/* Back to Top Button */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="back-to-top"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          ↑
-        </motion.button>
-      </motion.div>
-    </AnimatePresence>
+        {/* Gallery Section */}
+        <div className="project-details-gallery">
+          <h2>Project Gallery</h2>
+          <div className="project-gallery-grid">
+            {project.images.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="project-gallery-item"
+                whileHover={{ scale: 1.02 }}
+              >
+                <img src={image} alt={`${project.title} screenshot ${index + 1}`} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Back to Top Button */}
+      <motion.button
+        className={`project-details-back-to-top ${isBackToTopVisible ? 'visible' : ''}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        ↑
+      </motion.button>
+    </div>
   );
 };
 
