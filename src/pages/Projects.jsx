@@ -30,7 +30,7 @@ const Projects = () => {
       tags: ['Embedded Systems', 'IoT', 'Arduino'],
       category: 'Embedded Systems',
       link: '/projects/1',
-      featured: true
+      // featured: true
     },
     {
       id: 2,
@@ -39,7 +39,9 @@ const Projects = () => {
       image: marsImage,
       tags: ['ESP32', 'IoT', 'Real-time'],
       category: 'Embedded Systems',
-      link: '/projects/2'
+      link: '/projects/2',
+      featured: true
+
     },
     {
       id: 3,
@@ -67,7 +69,9 @@ const Projects = () => {
       image: leave,
       tags: ['Node.Js', 'MongoDB', 'Full-stack'],
       category: 'Web Development',
-      link: '/projects/6'
+      link: '/projects/5',
+      featured: true
+
     },
     {
       id: 6,
@@ -94,7 +98,9 @@ const Projects = () => {
       image: alumni,
       tags: ['React', 'Node.js', 'MongoDB'],
       category: 'Web Development',
-      link: '/projects/9'
+      link: '/projects/8',
+      featured: true
+
     }
   ];
 

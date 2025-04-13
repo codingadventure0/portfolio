@@ -5,6 +5,8 @@ import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaCode, FaRobot, FaShieldAlt,
 import { SiArduino, SiPython, SiReact, SiNodedotjs } from 'react-icons/si';
 import '../assets/styles/projectsdetails.css';
 
+import { projectImages } from '../assets/images';
+
 const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -28,9 +30,9 @@ const ProjectDetails = () => {
       ],
       technologies: ['Arduino', 'ESP32', 'C++', 'Bluetooth Module', 'WebCam'],
       images: [
-        '/images/pragyan-project.jpg',
-        '/images/pragyan-2.jpg',
-        '/images/pragyan-3.jpg'
+        projectImages.pragyan.project,
+        projectImages.pragyan.knowYourPragyan,
+        projectImages.pragyan.image3
       ]
     },
     {
@@ -50,10 +52,10 @@ const ProjectDetails = () => {
       ],
       technologies: ['ESP32', 'Camera Module', 'LED Display', 'Wireless Transmission'],
       images: [
-        '/images/Mars.jpg',
-        '/images/Mars-rover.jpg',
-        '/images/rover-remote.jpg',
-        '/images/mars-group.jpg',
+        projectImages.marsRover.mars,
+        projectImages.marsRover.rover,
+        projectImages.marsRover.remote,
+        projectImages.marsRover.group
       ]
     },
     {
@@ -71,11 +73,12 @@ const ProjectDetails = () => {
           'Voice-controlled system commands',
           'Emotional and contextual responses'
         ],
-        technologies: ['Python', 'Google Gemini API', 'OpenAI API', 'SpeechRecognition', 'pyttsx3'],
+        technologies: ['Python', 'Google Gemini API', 'SpeechRecognition', 'pyttsx3'],
         images: [
-          '/images/jarvis-1.jpg',
-          '/images/jarvis-2.jpg',
-          '/images/jarvis-3.jpg'
+          projectImages.jarvis.image1,
+          projectImages.jarvis.image2,
+          projectImages.jarvis.image3,
+          projectImages.jarvis.image4,
         ]
       },
       
@@ -96,8 +99,11 @@ const ProjectDetails = () => {
         ],
         technologies: ['Python', 'Node.js', 'Burp Suite'],
         images: [
-          '/images/fuzzer-1.jpg',
-          '/images/fuzzer-2.jpg'
+          projectImages.fuzzer.image1,
+          projectImages.fuzzer.image2,
+          projectImages.fuzzer.image3,
+          projectImages.fuzzer.image4,
+          projectImages.fuzzer.image5,
         ]
       },
       
@@ -118,8 +124,11 @@ const ProjectDetails = () => {
         ],
         technologies: ['Node.js', 'MongoDB', 'Express.js', 'Bootstrap'],
         images: [
-          '/images/leave-1.jpg',
-          '/images/leave-2.jpg'
+          projectImages.leaveManagement.image1,
+          projectImages.leaveManagement.image2,
+          projectImages.leaveManagement.image3,
+          projectImages.leaveManagement.image4,
+          projectImages.leaveManagement.image5,
         ]
       },
       
@@ -138,10 +147,12 @@ const ProjectDetails = () => {
           'Interactive map integration',
           'Admin and guest dashboards'
         ],
-        technologies: ['Python', 'Django', 'PostgreSQL'],
+        technologies: ['Express.Js', 'Node.Js', 'MongoDB'],
         images: [
-          '/images/wanderlust-1.jpg',
-          '/images/wanderlust-2.jpg'
+          projectImages.wanderlust.image1,
+          projectImages.wanderlust.image2,
+          projectImages.wanderlust.image3,
+          projectImages.wanderlust.image4,
         ]
       },
     {
@@ -161,9 +172,9 @@ const ProjectDetails = () => {
       ],
       technologies: ['Arduino', 'Sensors', 'Motors', 'Bluetooth Module'],
       images: [
-        '/images/robotcar-1.jpg',
-        '/images/robotcar-2.jpg',
-        '/images/robotcar-3.jpg'
+        projectImages.robotCar.image1,
+        projectImages.robotCar.image2,
+        projectImages.robotCar.image3,
       ]
     },
     {
@@ -174,7 +185,7 @@ const ProjectDetails = () => {
       image: '/images/alumni.jpg',
       tags: ['React', 'MongoDB', 'Node.js'],
       githubLink: 'https://github.com/codingadventure0/Alumni-Association.git',
-      liveLink: '#',
+      liveLink: 'https://alumni-connection.netlify.app/',
       features: [
         'Interactive alumni map',
         'Profile updates and directory',
@@ -183,8 +194,9 @@ const ProjectDetails = () => {
       ],
       technologies: ['React', 'Node.js', 'Express.js', 'MongoDB'],
       images: [
-        '/images/alumni-1.jpg',
-        '/images/alumni-2.jpg'
+        projectImages.alumni.image1,
+        projectImages.alumni.image2,
+        projectImages.alumni.image3,
       ]
     }
   ];
@@ -254,7 +266,7 @@ const ProjectDetails = () => {
             <h1>{project.title}</h1>
             <p>{project.description}</p>
             <div className="project-details-links">
-              {project.githubLink && (
+              {project.githubLink && project.githubLink !== '#' ? (
                 <motion.a
                   href={project.githubLink}
                   target="_blank"
@@ -263,8 +275,16 @@ const ProjectDetails = () => {
                 >
                   <FaGithub /> View Code
                 </motion.a>
+              ): (
+                  <motion.button
+                  whileHover={{ y: -3 }}
+                  onClick={() => alert("Sorry for the inconvenience! The GitHub repository for this project is currently private. Contact me for more access details.")}
+                  className="github-disabled-link"
+                >
+                  <FaGithub /> Code Private 
+                </motion.button>
               )}
-              {/* {project.liveLink && (
+              {project.liveLink && project.liveLink !== '#' ? (
                 <motion.a
                   href={project.liveLink}
                   target="_blank"
@@ -274,7 +294,15 @@ const ProjectDetails = () => {
                 >
                   <FaExternalLinkAlt /> Live Demo
                 </motion.a>
-              )} */}
+              ) : (
+                <motion.button
+                  whileHover={{ y: -3 }}
+                  onClick={() => alert("The live demo for this project is currently unavailable. Please check back later or contact me for more information.")}
+                  className="live-disabled-link"
+                >
+                  <FaExternalLinkAlt /> Demo Unavailable
+                </motion.button>
+              )}
             </div>
           </div>
         </div>
