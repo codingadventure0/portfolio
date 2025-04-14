@@ -1548,3 +1548,13 @@ a {
   width: 60px;
   height: 60px;
 }
+
+.achievements-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.achievements-section h2 span {
+  color: var(--primary-color);
+}

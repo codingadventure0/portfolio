@@ -59,6 +59,7 @@ import { Link } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import MouseEffect from "../components/MouseEffect";
+import AchievementsCarousel from "../components/AchievementsCarousel";
 
 // Particle background component
 const ParticlesBackground = () => {
@@ -358,6 +359,105 @@ const Home = () => {
       name: "Email",
       link: "abhishek23iot17.gecv@gmail.com",
       color: "#ea4335",
+    },
+  ];
+
+  const achievementsGallery = [
+    {
+      src: "/portfolio/images/sih-winner.jpg",
+      alt: "Hackathon Winner",
+      caption: {
+        title: "1st Place - College-level hackathon.",
+        description: "Led a team of 6 to develop a real-time cybersecurity threat detection dashboard using Python and Cybersecurity. Implemented many tools like nmap, whireshark, metasploit with 90% accuracy."
+      }
+    },
+    {
+      src: "/portfolio/images/sih-gp.jpg",
+      alt: "SIH Finalist 2024",
+      caption: {
+        title: "Recognized for innovative tech solution using Python and Cybersecurity.",
+        description: "Developed a secure web application fuzzer tool platform combining multiples tools like nmap, metasploit, whireshar which can help to dectect vulnurabilities using advanced features and encryption techniques. The solution was selected among top 10 out of 500+ entries in Smart India Hackathon 2024."
+      }
+    },
+    // {
+    //   src: "/images/achievement3.jpg",
+    //   alt: "1st Place Python Competition",
+    //   caption: {
+    //     title: "Awarded for solving complex programming challenges.",
+    //     description: "Competed against 200+ participants in a 2-hour coding marathon, solving 15 algorithmic problems with optimal solutions. Demonstrated expertise in data structures and problem-solving under time constraints."
+    //   }
+    // },
+    {
+      src: "/portfolio/images/web.jpg",
+      alt: "Web Development Winner",
+      caption: {
+        title: "1st prize for innovative web application.",
+        description: "Built an tourism management system with HTML, CSS, JavaScript, Bootstrap."
+      }
+    },
+    // {
+    //   src: "/images/achievement3.jpg",
+    //   alt: "ISRO Recognition",
+    //   caption: {
+    //     title: "Appreciation certificate for Pragyan Rover Model.",
+    //     description: "Designed and built a functional scale model of ISRO's Pragyan rover with Arduino-based autonomous navigation system. Recognized by ISRO scientists for technical excellence and innovation in embedded systems."
+    //   }
+    // },
+    {
+      src: "/portfolio/images/mars-gp.jpg",
+      alt: "Mars Rover Project Showcase",
+      caption: {
+        title: "Interactive ESP32-based mars rover model with advanced features.",
+        description: "Engineered a dual-ESP32 controlled moon rover with joystick-based remote navigation, live video streaming via CP-Plus camera, and multiple smart features. The model is currently on public display at Patna Planetarium, showcasing innovation in embedded systems and IoT integration."
+      }
+    },
+    {
+      src: "/portfolio/images/tt-single.jpg",
+      alt: "Intra College Table Tennis Winner",
+      caption: {
+        title: "1st Place - Intra College Table Tennis Championship.",
+        description: "Clinched the top position among 30+ participants demonstrating sharp reflexes, focus, and strategic gameplay."
+      }
+    },
+    // {
+    //   src: "/portfolio/images/tt-inter-college.jpg",
+    //   alt: "Inter College Table Tennis Winner",
+    //   caption: {
+    //     title: "1st Place - Inter College Table Tennis Tournament.",
+    //     description: "Represented the college and secured first position, competing against top players from 10+ colleges."
+    //   }
+    // },
+    {
+      src: "/portfolio/images/tt-com.jpg",
+      alt: "Commissionary Level Table Tennis Winner",
+      caption: {
+        title: "1st Place - Commissionary Level Table Tennis Competition.",
+        description: "Achieved victory at the commissionary level by showcasing exceptional consistency and advanced techniques."
+      }
+    },
+    {
+      src: "/portfolio/images/db.JPG",
+      alt: "Dance Battle Winner",
+      caption: {
+        title: "Winner - Inter College Dance Battle.",
+        description: "Stunned the crowd and judges with a powerful and creative dance performance, earning the top spot in a high-energy competition."
+      }
+    },
+    {
+      src: "/portfolio/images/cc-session.jpg",
+      alt: "Coding Club Session",
+    },
+    {
+      src: "/portfolio/images/cc-session2.jpg",
+      alt: "Coding Club Session",
+    },
+    {
+      src: "/portfolio/images/sih-certificate.jpg",
+      alt: "SIH Internal Certificate",
+    },
+    {
+      src: "/portfolio/images/tt-prize.jpg",
+      alt: "Table Tennis Prize",
     },
   ];
 
@@ -1209,6 +1309,13 @@ const Home = () => {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="achievements-section">
+        <h2>
+          My <span>Gallery</span> 
+        </h2>
+        <AchievementsCarousel images={achievementsGallery} />
       </section>
 
       {/* Certifications Section */}
