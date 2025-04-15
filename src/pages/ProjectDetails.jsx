@@ -31,7 +31,7 @@ const ProjectDetails = () => {
       technologies: ['Arduino', 'ESP32', 'C++', 'Bluetooth Module', 'WebCam'],
       images: [
         projectImages.pragyan.project,
-        projectImages.pragyan.knowYourPragyan,
+        projectImages.pragyan.image2,
         projectImages.pragyan.image3
       ]
     },

@@ -346,18 +346,18 @@ const Home = () => {
       link: "https://www.linkedin.com/in/abhishek-kumar977/",
       color: "#0077b5",
     },
-    { icon: <SiLeetcode />, name: "LeetCode", link: "#", color: "#f89f1b" },
+    // { icon: <SiLeetcode />, name: "LeetCode", link: "#", color: "#f89f1b" },
     {
       icon: <SiHackerrank />,
       name: "HackerRank",
       link: "https://www.hackerrank.com/profile/abhibth977",
       color: "#2ec866",
     },
-    { icon: <FaTwitter />, name: "Twitter", link: "#", color: "#1da1f2" },
+    { icon: <FaTwitter />, name: "Twitter", link: "https://x.com/itsabhishek_01", color: "#1da1f2" },
     {
       icon: <FiMail />,
       name: "Email",
-      link: "abhishek23iot17.gecv@gmail.com",
+      link: `mailto:abhishek23iot17.gecv@gmail.com?subject=Contact%20from%20Portfolio&body=Hello%20Abhishek,`,
       color: "#ea4335",
     },
   ];
@@ -454,6 +454,14 @@ const Home = () => {
     {
       src: "/portfolio/images/sih-certificate.jpg",
       alt: "SIH Internal Certificate",
+    },
+    {
+      src: "/portfolio/images/pragyan2.jpg",
+      alt: "Pragyan Rover Model",
+    },
+    {
+      src: "/portfolio/images/pragyan3.jpg",
+      alt: "Pragyan Rover Model",
     },
     {
       src: "/portfolio/images/tt-prize.jpg",

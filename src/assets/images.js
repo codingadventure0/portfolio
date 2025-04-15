@@ -2,8 +2,8 @@ export const projectImages = {
     pragyan: {
       main: '/portfolio/images/pragyan.jpg',
       project: '/portfolio/images/pragyan-project.jpg',
-      knowYourPragyan: '/portfolio/images/KnowYourPragyan.jpeg',
-      image3: '/portfolio/images/pragyan-3.jpg'
+      image2: '/portfolio/images/pragyan2.jpg',
+      image3: '/portfolio/images/pragyan3.jpg'
     },
     marsRover: {
       main: '/portfolio/images/marsrover.jpg',
