@@ -566,7 +566,7 @@ const Home = () => {
               <motion.a
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
-                href="/portfolio/images/abhishek_kumar_resume.pdf"
+                href="/portfolio/images/abhishek_kumar_resume.docx"
                 download
                 className="btn btn-primary"
                 initial={{ opacity: 0, y: 20 }}
