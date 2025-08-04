@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import ProjectCard from '../components/ProjectCard';
 import '../assets/styles/projects.css';
-import MouseEffect from '../components/MouseEffect';
+// import MouseEffect from '../components/MouseEffect';
 
 // Importing Imges
 import pragyanImage from '/images/KnowYourPragyan.jpeg';
@@ -116,7 +116,7 @@ const Projects = () => {
 
   return (
     <div className="projects-page" ref={ref}>
-      <MouseEffect />
+{/*       <MouseEffect /> */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
