@@ -58,7 +58,7 @@ import "../assets/styles/home.css";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import MouseEffect from "../components/MouseEffect";
+// import MouseEffect from "../components/MouseEffect";
 import AchievementsCarousel from "../components/AchievementsCarousel";
 
 // Particle background component
@@ -471,7 +471,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <MouseEffect />
+{/*       <MouseEffect /> */}
       {/* Floating Social Icons */}
       <motion.div
         className="social-icons-container"
