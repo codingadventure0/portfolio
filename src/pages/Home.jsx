@@ -503,7 +503,7 @@ const Home = () => {
       <section className="hero" ref={heroRef}>
         <ParticlesBackground />
         <div className="container">
-          <MouseEffect />
+          {/* <MouseEffect /> */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 50 }}
