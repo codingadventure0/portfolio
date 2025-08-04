@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import emailjs from 'emailjs-com';
 import { FaPaperPlane, FaMapMarkerAlt, FaPhone, FaEnvelope, FaLinkedin, FaGithub } from 'react-icons/fa';
 import '../assets/styles/contact.css';
-import MouseEffect from '../components/MouseEffect'
+// import MouseEffect from '../components/MouseEffect'
 
 const Contact = () => {
   const [ref, inView] = useInView({ threshold: 0.1 });
@@ -91,7 +91,7 @@ const Contact = () => {
 
   return (
     <div className="contact-page" ref={ref}>
-      <MouseEffect/>
+{/*       <MouseEffect/> */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: inView ? 1 : 0 }}
